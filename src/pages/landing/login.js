@@ -83,7 +83,7 @@ const LandingPage = () => {
                 <div className="form-group mt-3">
                   <span>Email</span>
 
-                  <input type="text" className="form-control" name="email" style={{ border: '1px solid green', backgroundColor: 'white', color: 'green',outline: 'none' }}   id="email" placeholder="umutoniwase@gmail.com" onChange={handleChange}/>
+                  <input type="text" className="form-control" name="email" style={{ border: '1px solid green', backgroundColor: 'white', color: 'green',outline: 'none' }}   id="email" placeholder="cedrick@gmail.com" onChange={handleChange}/>
                 </div>
                 <br />
 
