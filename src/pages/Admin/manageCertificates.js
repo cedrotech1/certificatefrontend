@@ -15,23 +15,32 @@ const CertificateGenerator = () => {
       .catch((error) => console.error("Error fetching users:", error));
   }, []);
 
-  const generateAllCertificates = () => {
+  const generateAllCertificates = async () => {
     const doc = new jsPDF({ orientation: "landscape", format: "a4" });
+  
+    // Convert image URL to Base64
+    const getBase64Image = async (url) => {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+    };
+  
+    const imageUrl = "http://res.cloudinary.com/dzl8xve8s/image/upload/v1743627256/Card/oxxyigigpiqx3xeexzpx.png";
+    const backgroundImage = await getBase64Image(imageUrl);
+  
     users.forEach((user, index) => {
       let title = "Mr.";
       if (user.gender === "female") {
         title = user.maritalStatus === "married" ? "Mrs." : "Miss";
       }
-
-      doc.addImage(
-        "http://res.cloudinary.com/dzl8xve8s/image/upload/v1743627256/Card/oxxyigigpiqx3xeexzpx.png",
-        "JPEG",
-        0,
-        0,
-        297,
-        210
-      );
-
+  
+      // Add background image
+      doc.addImage(backgroundImage, "JPEG", 0, 0, 297, 210);
+  
       doc.setFontSize(24);
       doc.text("CERTIFICATE OF ACHIEVEMENT", 148, 50, { align: "center" });
       doc.setFontSize(18);
@@ -40,11 +49,13 @@ const CertificateGenerator = () => {
       doc.text(`${title} ${user.firstname} ${user.lastname}`, 148, 90, { align: "center" });
       doc.setFontSize(14);
       doc.text("In recognition of your dedication and hard work.", 148, 110, { align: "center" });
-
+  
       if (index < users.length - 1) doc.addPage();
     });
+  
     doc.save("All_Certificates.pdf");
   };
+  
 
   return (
     <div className="container text-center mt-4">
