@@ -4,11 +4,12 @@ import axios from "axios";
 
 const CertificateGenerator = () => {
   const [users, setUsers] = useState([]);
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/api/v1/users`, {
-        headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzQzNjI0NDM2LCJleHAiOjE3NDYyMTY0MzZ9.R_vizOvUAdIZMjCtIG6BxfWoxzomwoNBWW66U2S-0g0" },
+        headers: { 
+          Authorization: `Bearer ${token}` },
       })
       .then((response) => setUsers(response.data.users))
       .catch((error) => console.error("Error fetching users:", error));
